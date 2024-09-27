@@ -46,8 +46,8 @@ Note that, using `reticulate`, **both Python and R packages are installed using 
 You should not need to manually install these packages if you are working in JupyterHub.
 
 ```{r}
-# py_install(c("pandas", "numpy", "scikit-learn",
-#              "matplotlib", "seaborn", "jupyter"))
+py_install(c("pandas", "numpy", "scikit-learn",
+              "matplotlib", "seaborn", "jupyter"))
 ```
 
 To use a Python package, similar to `library()` in R, we write `import`. For example, to load the `numpy` and `scikit-learn` packages:
