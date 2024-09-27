@@ -46,6 +46,10 @@ Note that, using `reticulate`, **both Python and R packages are installed using 
 You should not need to manually install these packages if you are working in JupyterHub.
 
 ```{r}
+library(reticulate)
+```
+
+```{r}
 py_install(c("pandas", "numpy", "scikit-learn",
               "matplotlib", "seaborn", "jupyter"))
 ```
@@ -71,7 +75,7 @@ def say_hello(name):
     print('Hello, {name}.'.format(name=name))
 
 # Try replacing YOUR NAME HERE with your own name:
-say_hello("YOUR NAME HERE")
+say_hello("Albert")
 ```
 
 ## Our First Case Study
@@ -130,7 +134,25 @@ starwars_smaller.groupby('gender')['height'].describe()
 
 ### Exercises
 
-1. What does the above code chunk show? Can you replicate that code in R?
+1.  What does the above code chunk show? Can you replicate that code in R?
+
+The code chunk above shows the summary statistics of the column "height" but seperated by the 2 genders in the dataset
+
+```{r}
+starwars_smaller %>% group_by(gender) %>% na.omit() %>% summarize(
+  count = n(), 
+  mean = mean(height),
+  std = sd(height), 
+  min = min(height), 
+  "25%" = quantile(height, 0.25),
+  "50%" = quantile(height, 0.25),
+  "75%" = quantile(height, 0.25),
+  max = max(height)
+  )
+
+```
+
+It looks kinda worse even though it has the same information.
 
 The following code uses Python to create a histogram of Star Wars character heights:
 
@@ -177,8 +199,27 @@ starwars_smaller %>%
 
 ### Exercises
 
-1. What do you notice about the distribution of character heights broken down by gender identity?
+1.  What do you notice about the distribution of character heights broken down by gender identity?
 
-2. Can you identify the character(s) in the data set that have a missing value for gender identity? Which characters are they?
+Ignoring the grouping, it looks like a normal distribtion.
 
-3. Can you determine why the code in R included the density curve and histogram for those characters while the code in Python did not?
+1.  Can you identify the character(s) in the data set that have a missing value for gender identity? Which characters are they?
+
+I don't know which characters would be missing from domain knowledge.
+
+```{r}
+which(is.na(starwars_smaller$gender))
+```
+
+```{r}
+starwars_smaller[18,]$name
+starwars_smaller[58,]$name
+starwars_smaller[59,]$name
+starwars_smaller[80,]$name
+```
+
+Now I have found that the 4 missing are \[1\] "Jek Tono Porkins" \[1\] "Gregar Typho" \[1\] "Cordé" \[1\] "Sly Moore"
+
+1.  Can you determine why the code in R included the density curve and histogram for those characters while the code in Python did not?
+
+we used geom_density
